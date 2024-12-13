@@ -118,6 +118,8 @@ public class JdbcTemp {
                    
                     p1.setPrezzo(rs.getDouble("prezzo"));
                     p1.setUrl(rs.getString("url"));
+                    p1.setPezzi(rs.getInt("pezzi"));
+                    p1.setPezziV(rs.getInt("pezziV"));
                     
 
                     listaP.add(p1);

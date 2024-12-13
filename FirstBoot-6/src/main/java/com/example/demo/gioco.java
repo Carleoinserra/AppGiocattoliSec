@@ -6,6 +6,20 @@ public class gioco {
 	String marca;
 	double prezzo;
 	String url;
+	int pezzi;
+	public int getPezzi() {
+		return pezzi;
+	}
+	public void setPezzi(int pezzi) {
+		this.pezzi = pezzi;
+	}
+	public int getPezziV() {
+		return pezziV;
+	}
+	public void setPezziV(int pezziV) {
+		this.pezziV = pezziV;
+	}
+	int pezziV;
 	public String getNome() {
 		return nome;
 	}
