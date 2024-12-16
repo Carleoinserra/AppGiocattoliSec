@@ -26,36 +26,60 @@ th
 {
 text-align: center;
 }
+
+.custom {
+ 
+ 
+ width: 200px !important;
+ }
+
 </style>
 </head>
 <body>
 <div class="container">
- <form action = "/buy" method = "post">
-      <table>
+
+
+ 
+ <div class="row">
+    <div class="col s12 m6">
+    <div class="card blue-grey darken-1">
+    <h3>Carrello</h3>
+  <table>
+       
         <thead>
           <tr>
               <th>Nome prodotto</th>
               <th>Marca</th>
               <th>Prezzo</th>
               <th>Immagine</th>
-              <th>Seleziona</th>
+              <th>Pezzi</th>
+              
           </tr>
         </thead>
 
 <tbody>
-  
-  <tr th:each="prodotto : ${lista}">
+ 
+  <tr th:each="prodotto : ${carrello}">
     <td th:text="${prodotto.nome}"></td>
     <td th:text="${prodotto.marca}"></td>
     <td>€<span th:text="${prodotto.prezzo}"></span></td>
     <td><img th:src="${prodotto.url}" /></td>
-    <td><input type = "number" name = "selected" value = "0"> </td>
+    <td th:text="${prodotto.pezzi}"></td>
+    
+    
+    
+    
+   
+    
   </tr>
   
   
 </tbody>
+ 
       </table>
-      <h3>Scrivi la tua mail</h3>
+      
+       <h3>Scrivi la tua mail</h3>
+       <form action = "/buy" method = "post">
       <input type = "text" name = "mail" required>
       <label for="testToken">Test Token:</label>
         <select id="testToken" name="token" required>
@@ -63,11 +87,52 @@ text-align: center;
             <option value="tok_mastercard">MasterCard Test Card</option>
             <option value="tok_amex">American Express Test Card</option>
         </select>
+       
       
       
       
       <input type = "submit"  value = "Compra">
       </form>
+      <form action = "/clear" method="post">
+      
+      <input type = "submit"  value = "Svuota carrello">
+      </form>
+      </div>
+      </div>
+      </div>
+<h1>Store</h1>
+<div class="row">
+      
+<div class="card" th:each="prodotto : ${lista}">
+<div class="col s4">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator custom" th:src="${prodotto.url}" >
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4" th:text="${prodotto.nome}"><i class="material-icons right">more_vert</i></span>
+      
+      <form action = "/add" method = "post">
+    <p><input type = "number" name = "selected" value = "0"> 
+    
+    <input type = "hidden" name = "nome" th:value = "${prodotto.nome}"> 
+    
+    
+   
+   <input type = "submit" name = "gioco" value = "+"> </td>
+    </form>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4" th:text="${prodotto.marca}"><i class="material-icons right">close</i></span>
+      <p th:text="${prodotto.prezzo}"></p>
+    </div>
+  </div>
+  </div>
+  </div>
+  
+
+
+      
+     
       <a href="/form"><- Torna ad aggiungere prodotti</a>
       </div>
 </body>

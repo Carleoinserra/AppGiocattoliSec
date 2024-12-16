@@ -7,6 +7,10 @@ public class giocoA {
 	double prezzo;
 	String url;
 	int pezzi;
+	
+	public giocoA() {
+		
+	}
 	public giocoA(String nome, String marca, double prezzo, String url, int pezzi) {
 		super();
 		this.nome = nome;

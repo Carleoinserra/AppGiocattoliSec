@@ -89,7 +89,7 @@ ArrayList <gioco> lista = p1.getLista();
 	}
 	
 	@PostMapping("/buy")
-	public String recap(@RequestParam("selected") ArrayList<Integer> selected,
+	public String recap(
 			@RequestParam("mail") String mail, @RequestParam("token") String token, 
 			
 			Model model) throws MessagingException {
@@ -101,20 +101,18 @@ ArrayList <gioco> lista = p1.getLista();
 				
 	    String soggetto = "Hai acquistato: ";
 				
-				for (int i = 0; i < lista.size(); i++) {
+				for (int i = 0; i < carrello.size(); i++) {
 			
 			
 			
-			if (selected.get(i) > 0 ) {
+			if (carrello.get(i).pezzi > 0 ) {
 			//System.out.println("Hai acquistato " + listaP.get(i).getNome() + " marca " + listaP.get(i).getMarca()  );
 			//System.out.println("In " + selected.get(i) + " pezzi");
-			somma += selected.get(i) * lista.get(i).getPrezzo();
-			giocoA g1 = new giocoA(lista.get(i).getNome(), lista.get(i).getMarca(),(lista.get(i).getPrezzo()*selected.get(i)),
-					lista.get(i).getUrl(), selected.get(i) );
-			listaP.add(g1);
-			p1.change(lista.get(i).getNome(), selected.get(i));
-			listaU.add(lista.get(i).getUrl());
-			soggetto +=   lista.get(i).getNome() + ", ";
+			somma += carrello.get(i).pezzi * carrello.get(i).prezzo;
+			
+			p1.change(carrello.get(i).nome, carrello.get(i).pezzi);
+			listaU.add(carrello.get(i).url);
+			soggetto +=   carrello.get(i).nome + ", ";
 			
 		}
 		}
@@ -122,7 +120,7 @@ ArrayList <gioco> lista = p1.getLista();
 		emailService.sendEmailWithImage(mail, "mail da talentform-giocattoli", soggetto, listaU);
 		
 		//System.out.println("La somma totale da pagare è: " + somma + " euro");
-		model.addAttribute("lista", listaP);
+		model.addAttribute("lista", carrello);
 		model.addAttribute("somma", somma);
 		
 		  try {
@@ -171,5 +169,112 @@ ArrayList <gioco> lista = p1.getLista();
 		return lista;
 		
 	}
+	ArrayList<giocoA> carrello = new ArrayList<>();
+	@PostMapping("/add")
+	public String add(Model model, @RequestParam("selected")  int selectedG,@RequestParam("nome") String nome  ) {
+		
+		
+		
+		ArrayList <gioco> listaG = p1.getLista();
+		System.out.println(selectedG);
+		System.out.println(nome);
+		boolean trovato = false;
+		
+		int indice = -1;
+		
+		
+		
+    	  
+    	  if (carrello.size() == 0) {
+    		  for (int i = 0; i < listaG.size(); i++ ) {
+    			  
+    			  
+    			  if (listaG.get(i).nome.equals(nome)) {
+				
+				giocoA g1 = new giocoA();
+				g1.nome = listaG.get(i).nome;
+				g1.marca = listaG.get(i).marca;
+				g1.url = listaG.get(i).url;
+				g1.prezzo = listaG.get(i).prezzo;
+				g1.pezzi = selectedG; 
+				System.out.println("sono il primo");
+				carrello.add(g1);
+				
+			}}}
+    	  
+    	  else {
+    		 System.out.println("sono qui");
+
+    			 for (int i = 0; i < listaG.size(); i++ ) {
+			
+		
+		if (listaG.get(i).nome.equals(nome)) {
+			
+			for (int j = 0; j < carrello.size(); j++) {
+				
+				
+				System.out.println(carrello.get(j).nome);
+				
+				if (carrello.get(j).nome.equals(nome) == true) {
+			System.out.println(trovato);
+			trovato = true;
+			
+			/**/
+				}
+				else {
+					indice = i;
+				}
+		}
+		
+		}
+	}
+    	 
+		 
+		 
+		 
+		 
+		 
+if (trovato == false) {
+    		 
+    		 giocoA g1 = new giocoA();
+ 			g1.nome = listaG.get(indice).nome;
+ 			g1.marca = listaG.get(indice).marca;
+ 			g1.url = listaG.get(indice).url;
+ 			g1.prezzo = listaG.get(indice).prezzo;
+ 			g1.pezzi = selectedG; 
+ 			System.out.println("inserito perchè diverso");
+ 			carrello.add(g1);
+    	 }
+else {
+	
+	for (int j = 0; j < carrello.size(); j++) {
+		
+		
+		System.out.println(carrello.get(j).nome);
+		
+		if (carrello.get(j).nome.equals(nome) == true) {
+	
+	giocoA g1 = new giocoA();
+		carrello.get(j).pezzi = selectedG;
+
+	
+}}}}
+		
+		model.addAttribute("carrello", carrello);
+		
+		return getStore(model);
+	}
+	
+	@PostMapping("/clear")
+	public String clear(Model model) {
+		
+		carrello.clear();
+		
+model.addAttribute("carrello", carrello);
+		
+		return getStore(model);
+		
+	}
+	
 
 }
